@@ -469,6 +469,7 @@ export default async function handler(req, res) {
       const expected = process.env.SUMOPOD_WEBHOOK_TOKEN;
       if (!expected) throw new HttpError(500, 'SUMOPOD_WEBHOOK_TOKEN belum dikonfigurasi.');
       if (!safeEqual(req.headers['x-webhook-token'], expected)) {
+        console.warn('[timlog-webhook] token ditolak');
         throw new HttpError(401, 'Webhook token tidak valid.');
       }
 
@@ -478,6 +479,12 @@ export default async function handler(req, res) {
       const orderId = data.order_id || data.orderId;
       const payment = (paymentId && db.payments[paymentId])
         || Object.values(db.payments).find(p => p.orderId === orderId);
+      console.log('[timlog-webhook] diterima', {
+        type,
+        paymentId: paymentId || null,
+        orderId: orderId || null,
+        matched: Boolean(payment),
+      });
 
       if (payment) {
         if (type === 'payment.completed') {
