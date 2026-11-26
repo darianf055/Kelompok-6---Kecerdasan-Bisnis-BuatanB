@@ -14,15 +14,14 @@ import { randomUUID, randomBytes, scryptSync, timingSafeEqual } from 'node:crypt
 /* ------------------------------------------------------------------ */
 
 const DB_KEY = 'timlog_db';
-const hasRedis = Boolean(
-  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
-);
-const redis = hasRedis
-  ? new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN,
-    })
-  : null;
+// Vercel's Upstash/KV integration injects KV_REST_API_*; the Upstash dashboard
+// itself uses UPSTASH_REDIS_REST_*. Support both so storage works either way.
+const redisUrl =
+  process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || '';
+const redisToken =
+  process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || '';
+const hasRedis = Boolean(redisUrl && redisToken);
+const redis = hasRedis ? new Redis({ url: redisUrl, token: redisToken }) : null;
 const memory = { db: null };
 const AMOUNT = 15000;
 

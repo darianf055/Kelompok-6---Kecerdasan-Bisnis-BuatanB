@@ -49,9 +49,7 @@ timlog-web/
 Data users/team/tugas/pembayaran disimpan di Redis.
 
 1. Di project Vercel, buka **Storage → Marketplace → Redis (Upstash)** lalu **Create**.
-2. Integrasi akan otomatis menambahkan env var:
-   - `UPSTASH_REDIS_REST_URL`
-   - `UPSTASH_REDIS_REST_TOKEN`
+2. Integrasi akan otomatis menambahkan env var `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `KV_URL`, `REDIS_URL` (atau `UPSTASH_REDIS_REST_*` kalau pakai Upstash langsung). Kode mendukung keduanya — tidak perlu diisi manual.
 3. Tambahkan env var berikut di **Settings → Environment Variables**:
 
 | Nama | Nilai |
