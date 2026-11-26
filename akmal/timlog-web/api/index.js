@@ -107,9 +107,8 @@ async function writeDB(db) {
 }
 
 async function readBody(req) {
-  if (req.body) {
-    return typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-  }
+  // Jangan pernah mengakses `req.body`: runtime Vercel mendefinisikannya sebagai
+  // getter own-property yang melempar "Invalid JSON". Baca stream mentah saja.
   let raw = '';
   for await (const chunk of req) raw += chunk;
   if (!raw.trim()) return {};

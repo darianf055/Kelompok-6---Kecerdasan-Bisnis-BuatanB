@@ -7,9 +7,9 @@ Website TimLog lengkap dengan backend serverless di Vercel dan payment gateway Q
 ```
 timlog-web/
 ├── index.html              # frontend (halaman utama)
-├── api/[...path].js        # semua endpoint /api
+├── api/index.js            # semua endpoint /api (di-rewrite dari /api/*)
+├── vercel.json             # rewrite /api/* → /api/index
 ├── package.json
-├── vercel.json
 └── .env.example
 ```
 
